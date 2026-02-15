@@ -51,6 +51,9 @@ const headerMeta = document.getElementById("headerMeta");
 const headerLinks = document.querySelector(".header-links");
 const repoLink = document.querySelector(".repo-link");
 const stravaProfileLink = document.querySelector(".strava-profile-link");
+const stravaProfileLabel = stravaProfileLink
+  ? stravaProfileLink.querySelector(".strava-profile-label")
+  : null;
 const footerHostedPrefix = document.getElementById("footerHostedPrefix");
 const footerHostedLink = document.getElementById("footerHostedLink");
 const footerPoweredLabel = document.getElementById("footerPoweredLabel");
@@ -380,7 +383,11 @@ function syncStravaProfileLink(profileUrl) {
     return;
   }
   stravaProfileLink.href = parsed.href;
-  stravaProfileLink.textContent = parsed.label;
+  if (stravaProfileLabel) {
+    stravaProfileLabel.textContent = parsed.label;
+  } else {
+    stravaProfileLink.textContent = parsed.label;
+  }
   stravaProfileLink.hidden = false;
   syncDesktopHeaderLinkPlacement();
 }
