@@ -22,6 +22,7 @@ const WEEKDAY_LABELS_BY_WEEK_START = Object.freeze({
   [WEEK_START_MONDAY]: Object.freeze(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]),
 });
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
+const ACTIVE_DAYS_METRIC_KEY = "active_days";
 const DEFAULT_UNITS = Object.freeze({ distance: "mi", elevation: "ft" });
 const UNIT_SYSTEM_TO_UNITS = Object.freeze({
   imperial: Object.freeze({ distance: "mi", elevation: "ft" }),
@@ -1079,6 +1080,12 @@ const FREQUENCY_METRIC_ITEMS = [
   { key: "moving_time", label: "Time" },
   { key: "elevation_gain", label: "Elevation" },
 ];
+const METRIC_LABEL_BY_KEY = Object.freeze({
+  [ACTIVE_DAYS_METRIC_KEY]: "Active Days",
+  distance: "Distance",
+  moving_time: "Time",
+  elevation_gain: "Elevation",
+});
 
 const FREQUENCY_METRIC_UNAVAILABLE_REASON_BY_KEY = {
   distance: "No distance data in current selection.",
@@ -1092,6 +1099,9 @@ function getFrequencyMetricUnavailableReason(metricKey, metricLabel) {
 }
 
 function formatMetricTotal(metricKey, value, units) {
+  if (metricKey === ACTIVE_DAYS_METRIC_KEY) {
+    return formatNumber(value, 0);
+  }
   if (metricKey === "distance") {
     return formatDistance(value, units || { distance: "mi" });
   }
@@ -1362,7 +1372,12 @@ function buildSummary(
     { title: "Total Activities", value: totals.count.toLocaleString() },
   ];
   if (showActiveDays) {
-    cards.push({ title: "Active Days", value: activeDays.size.toLocaleString() });
+    cards.push({
+      title: "Active Days",
+      value: activeDays.size.toLocaleString(),
+      metricKey: ACTIVE_DAYS_METRIC_KEY,
+      filterable: activeDays.size > 0,
+    });
   }
   cards.push(
     {
@@ -1493,7 +1508,9 @@ function buildHeatmapArea(aggregates, year, units, colors, type, layout, options
   const metricHeatmapKey = typeof options.metricHeatmapKey === "string"
     ? options.metricHeatmapKey
     : null;
-  const metricHeatmapMax = metricHeatmapKey
+  const metricHeatmapMax = metricHeatmapKey === ACTIVE_DAYS_METRIC_KEY
+    ? 1
+    : metricHeatmapKey
     ? Number(options.metricMaxByKey?.[metricHeatmapKey] || 0)
     : 0;
   const metricHeatmapActive = Boolean(metricHeatmapKey) && metricHeatmapMax > 0;
@@ -1564,7 +1581,9 @@ function buildHeatmapArea(aggregates, year, units, colors, type, layout, options
 
     const filled = (entry.count || 0) > 0;
     if (metricHeatmapActive) {
-      const metricValue = Number(entry[metricHeatmapKey] || 0);
+      const metricValue = metricHeatmapKey === ACTIVE_DAYS_METRIC_KEY
+        ? (filled ? 1 : 0)
+        : Number(entry[metricHeatmapKey] || 0);
       cell.style.backgroundImage = "none";
       cell.style.background = metricValue > 0
         ? heatColor(metricHeatmapColor, metricValue, metricHeatmapMax)
@@ -1772,6 +1791,7 @@ function buildCard(type, year, aggregates, units, options = {}) {
   const colors = type === "all" ? DEFAULT_COLORS : getColors(type);
   const metricHeatmapColor = options.metricHeatmapColor || (type === "all" ? MULTI_TYPE_COLOR : colors[4]);
   const metricMaxByKey = {
+    [ACTIVE_DAYS_METRIC_KEY]: 0,
     distance: 0,
     moving_time: 0,
     elevation_gain: 0,
@@ -1807,6 +1827,7 @@ function buildCard(type, year, aggregates, units, options = {}) {
     metricMaxByKey.moving_time = Math.max(metricMaxByKey.moving_time, Number(entry.moving_time || 0));
     metricMaxByKey.elevation_gain = Math.max(metricMaxByKey.elevation_gain, Number(entry.elevation_gain || 0));
   });
+  metricMaxByKey[ACTIVE_DAYS_METRIC_KEY] = totals.count > 0 ? 1 : 0;
 
   const renderHeatmap = () => {
     const nextHeatmapArea = buildHeatmapArea(aggregates, year, units, colors, type, layout, {
@@ -1823,6 +1844,9 @@ function buildCard(type, year, aggregates, units, options = {}) {
 
   const metricItems = buildYearMetricStatItems(totals, units);
   const filterableMetricKeys = getFilterableKeys(metricItems);
+  if (totals.count > 0) {
+    filterableMetricKeys.push(ACTIVE_DAYS_METRIC_KEY);
+  }
   activeMetricKey = normalizeSingleSelectKey(activeMetricKey, filterableMetricKeys);
   const metricButtons = new Map();
   const reportYearMetricState = (source) => {
@@ -2089,6 +2113,7 @@ function buildStatsOverview(payload, types, years, color, options = {}) {
         monthIndex: date.getMonth(),
         weekIndex: weekOfYear(date),
         hour: hasHour ? hourValue : null,
+        active_days: 1,
         distance: perActivityMetricValue("distance"),
         moving_time: perActivityMetricValue("moving_time"),
         elevation_gain: perActivityMetricValue("elevation_gain"),
@@ -2130,7 +2155,11 @@ function buildStatsOverview(payload, types, years, color, options = {}) {
       }
       const row = yearIndex.get(activity.year);
       if (row === undefined) return;
-      const weight = metricKey ? Number(activity[metricKey] || 0) : 1;
+      const weight = metricKey === ACTIVE_DAYS_METRIC_KEY
+        ? Number(activity.active_days || 0)
+        : metricKey
+        ? Number(activity[metricKey] || 0)
+        : 1;
 
       activityCount += 1;
       dayMatrix[row][activity.dayIndex] += weight;
@@ -2183,6 +2212,7 @@ function buildStatsOverview(payload, types, years, color, options = {}) {
 
   const baseData = buildFrequencyData();
   const metricTotals = {
+    [ACTIVE_DAYS_METRIC_KEY]: activities.reduce((sum, activity) => sum + Number(activity.active_days || 0), 0),
     distance: activities.reduce((sum, activity) => sum + Number(activity.distance || 0), 0),
     moving_time: activities.reduce((sum, activity) => sum + Number(activity.moving_time || 0), 0),
     elevation_gain: activities.reduce((sum, activity) => sum + Number(activity.elevation_gain || 0), 0),
@@ -2194,6 +2224,9 @@ function buildStatsOverview(payload, types, years, color, options = {}) {
   }));
   const metricButtons = new Map();
   const filterableMetricKeys = getFilterableKeys(metricItems);
+  if (Number(metricTotals[ACTIVE_DAYS_METRIC_KEY] || 0) > 0) {
+    filterableMetricKeys.push(ACTIVE_DAYS_METRIC_KEY);
+  }
   activeMetricKey = normalizeSingleSelectKey(activeMetricKey, filterableMetricKeys);
   const reportMetricState = (source) => {
     if (!onMetricStateChange) return;
@@ -2314,9 +2347,7 @@ function buildStatsOverview(payload, types, years, color, options = {}) {
   const renderFrequencyGraphs = () => {
     const activeFact = factItems.find((item) => item.key === activeFactKey) || null;
     const matrixData = buildFrequencyData(activeFact?.filter, activeMetricKey);
-    const metricLabel = activeMetricKey
-      ? FREQUENCY_METRIC_ITEMS.find((item) => item.key === activeMetricKey)?.label || "Metric"
-      : "";
+    const metricLabel = activeMetricKey ? (METRIC_LABEL_BY_KEY[activeMetricKey] || "Metric") : "";
     const formatTooltipValue = (value) => {
       if (!activeMetricKey) return "";
       return `${metricLabel}: ${formatMetricTotal(activeMetricKey, value, units)}`;
