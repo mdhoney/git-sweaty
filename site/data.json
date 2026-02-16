@@ -29879,8 +29879,9 @@
       }
     }
   },
-  "generated_at": "2026-02-16T12:54:37.573432+00:00",
+  "generated_at": "2026-02-16T15:16:11.526645+00:00",
   "other_bucket": "OtherSports",
+  "repo": "mdhoney/git-sweaty",
   "source": "garmin",
   "type_meta": {
     "Elliptical": {
@@ -29933,23 +29934,23 @@
     },
     "cross_country_skiing_ws": {
       "accent": "#00bbf9",
-      "label": "cross country skiing ws"
+      "label": "Cross country skiing ws"
     },
     "horseback_riding": {
       "accent": "#00f5d4",
-      "label": "horseback riding"
+      "label": "Horseback riding"
     },
     "paddling_v2": {
       "accent": "#00f5d4",
-      "label": "paddling v2"
+      "label": "Paddling v2"
     },
     "rowing_v2": {
       "accent": "#9b5de5",
-      "label": "rowing v2"
+      "label": "Rowing v2"
     },
     "stand_up_paddleboarding_v2": {
       "accent": "#00f5d4",
-      "label": "stand up paddleboarding v2"
+      "label": "Stand up paddleboarding v2"
     }
   },
   "types": [
@@ -29975,6 +29976,7 @@
     "distance": "mi",
     "elevation": "ft"
   },
+  "week_start": "sunday",
   "years": [
     2016,
     2017,
