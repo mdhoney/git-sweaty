@@ -13334,6 +13334,13 @@
       "subtype": "running",
       "type": "Run",
       "year": 2026
+    },
+    {
+      "date": "2026-02-23",
+      "hour": 14,
+      "subtype": "walking",
+      "type": "Walk",
+      "year": 2026
     }
   ],
   "aggregates": {
@@ -29825,6 +29832,15 @@
           "distance": 2100.889892578125,
           "elevation_gain": 1.0,
           "moving_time": 1690.0
+        },
+        "2026-02-23": {
+          "activity_ids": [
+            "21963937882"
+          ],
+          "count": 1,
+          "distance": 1357.300048828125,
+          "elevation_gain": 10.0,
+          "moving_time": 1335.0
         }
       },
       "WeightTraining": {
@@ -29943,7 +29959,7 @@
       }
     }
   },
-  "generated_at": "2026-02-23T15:19:14.368371+00:00",
+  "generated_at": "2026-02-24T15:21:36.708223+00:00",
   "other_bucket": "OtherSports",
   "repo": "mdhoney/git-sweaty",
   "source": "garmin",
