@@ -22870,5 +22870,29 @@
     "start_date_local": "2026-02-23T14:24:01",
     "type": "Walk",
     "year": 2026
+  },
+  {
+    "date": "2026-02-26",
+    "distance": 0.0,
+    "elevation_gain": 0.0,
+    "id": "22000786090",
+    "moving_time": 568.7940063476562,
+    "raw_activity_type": "strength_training",
+    "raw_type": "strength_training",
+    "start_date_local": "2026-02-26T23:17:54",
+    "type": "WeightTraining",
+    "year": 2026
+  },
+  {
+    "date": "2026-02-26",
+    "distance": 5101.6201171875,
+    "elevation_gain": 0.0,
+    "id": "22001146717",
+    "moving_time": 1851.9730224609375,
+    "raw_activity_type": "treadmill_running",
+    "raw_type": "treadmill_running",
+    "start_date_local": "2026-02-26T23:46:50",
+    "type": "VirtualRun",
+    "year": 2026
   }
 ]
