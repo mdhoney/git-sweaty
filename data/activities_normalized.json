@@ -22978,5 +22978,17 @@
     "start_date_local": "2026-03-08T07:20:12",
     "type": "Run",
     "year": 2026
+  },
+  {
+    "date": "2026-03-09",
+    "distance": 4982.91015625,
+    "elevation_gain": 0.0,
+    "id": "22121971233",
+    "moving_time": 2742.0,
+    "raw_activity_type": "paddling_v2",
+    "raw_type": "paddling_v2",
+    "start_date_local": "2026-03-09T18:02:07",
+    "type": "paddling_v2",
+    "year": 2026
   }
 ]

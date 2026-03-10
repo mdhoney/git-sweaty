@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-09T15:21:48.118058+00:00",
+  "generated_at": "2026-03-10T15:20:24.180734+00:00",
   "years": {
     "2016": {
       "Hike": {
@@ -16682,6 +16682,17 @@
           "distance": 1020.0,
           "elevation_gain": 0.0,
           "moving_time": 367.7040100097656
+        }
+      },
+      "paddling_v2": {
+        "2026-03-09": {
+          "activity_ids": [
+            "22121971233"
+          ],
+          "count": 1,
+          "distance": 4982.91015625,
+          "elevation_gain": 0.0,
+          "moving_time": 2742.0
         }
       },
       "stand_up_paddleboarding_v2": {
