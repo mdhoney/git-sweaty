@@ -13411,6 +13411,13 @@
       "subtype": "paddling_v2",
       "type": "paddling_v2",
       "year": 2026
+    },
+    {
+      "date": "2026-03-10",
+      "hour": 18,
+      "subtype": "running",
+      "type": "Run",
+      "year": 2026
     }
   ],
   "aggregates": {
@@ -29925,6 +29932,15 @@
           "distance": 7547.7001953125,
           "elevation_gain": 44.0,
           "moving_time": 2257.0
+        },
+        "2026-03-10": {
+          "activity_ids": [
+            "22134024596"
+          ],
+          "count": 1,
+          "distance": 6487.240234375,
+          "elevation_gain": 22.0,
+          "moving_time": 2096.77099609375
         }
       },
       "VirtualRun": {
@@ -30121,7 +30137,7 @@
       }
     }
   },
-  "generated_at": "2026-03-10T15:20:24.239817+00:00",
+  "generated_at": "2026-03-11T15:21:36.963209+00:00",
   "other_bucket": "OtherSports",
   "repo": "mdhoney/git-sweaty",
   "source": "garmin",
