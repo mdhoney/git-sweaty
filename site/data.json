@@ -13432,6 +13432,13 @@
       "subtype": "running",
       "type": "Run",
       "year": 2026
+    },
+    {
+      "date": "2026-03-14",
+      "hour": 19,
+      "subtype": "strength_training",
+      "type": "WeightTraining",
+      "year": 2026
     }
   ],
   "aggregates": {
@@ -30132,6 +30139,15 @@
           "distance": 0.0,
           "elevation_gain": 0.0,
           "moving_time": 1502.8919677734375
+        },
+        "2026-03-14": {
+          "activity_ids": [
+            "22177065866"
+          ],
+          "count": 1,
+          "distance": 0.0,
+          "elevation_gain": 0.0,
+          "moving_time": 1440.6650390625
         }
       },
       "cross_country_skiing_ws": {
@@ -30169,7 +30185,7 @@
       }
     }
   },
-  "generated_at": "2026-03-14T15:07:22.601062+00:00",
+  "generated_at": "2026-03-15T15:08:29.615940+00:00",
   "other_bucket": "OtherSports",
   "repo": "mdhoney/git-sweaty",
   "source": "garmin",
